@@ -99,24 +99,30 @@ const questions = [
   ];
 
 
-
+let contatore = 0
 
 function benchmarkQuestion() {
+  if (contatore >= 10) {
+    return
+  }
     let domanda = document.querySelector("#question")
     let options = document.querySelectorAll("#options button")
+    let counter = document.querySelector(".questionsCounter")
     let random = questions[Math.floor(Math.random() * questions.length)]
     domanda.textContent = random.question
     let risposte = random.incorrect_answers.concat(random.correct_answer)
     risposte = risposte.sort(() => Math.random() - 0.5)
     for (let i = 0; i < options.length; i++) {
         if (i < risposte.length) {
-            options[i].style.display = "flex";
+            options[i].style.display = "inline-block";
             options[i].textContent = risposte[i];
             options[i].value = risposte[i];
         } else {
             options[i].style.display = "none";
         }
     }
+
+    contatore++
+    counter.textContent = "Domanda " + contatore + "/10"
 }
 
-benchmarkQuestion()
