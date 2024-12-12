@@ -16,7 +16,7 @@ const questions = [
       type: "multiple",
       difficulty: "easy",
       question:
-        "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn&#039;t get modified?",
+        "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn't get modified?",
       correct_answer: "Final",
       incorrect_answers: ["Static", "Private", "Public"],
     },
@@ -100,17 +100,31 @@ const questions = [
 
 
 let contatore = 0
+let score = 0
+let currentQuestion = null
+let usedQuestions = []
 
 function benchmarkQuestion() {
   if (contatore >= 10) {
-    return
+    alert("Quiz terminato! Punteggio: " + score + " su 10");
+    for (let i = 0; i < BUTTONS.length; i++) {
+      BUTTONS[i].disabled = true;  
+    }
+    return;
   }
     let domanda = document.querySelector("#question")
     let options = document.querySelectorAll("#options button")
     let counter = document.querySelector(".questionsCounter")
-    let random = questions[Math.floor(Math.random() * questions.length)]
-    domanda.textContent = random.question
-    let risposte = random.incorrect_answers.concat(random.correct_answer)
+
+    let randomIndex
+    do {
+      randomIndex = Math.floor(Math.random() * questions.length)
+    } while (usedQuestions.includes(randomIndex))
+      usedQuestions.push(randomIndex)
+
+    currentQuestion = questions[randomIndex]
+    domanda.textContent = currentQuestion.question
+    let risposte = currentQuestion.incorrect_answers.concat(currentQuestion.correct_answer)
     risposte = risposte.sort(() => Math.random() - 0.5)
     for (let i = 0; i < options.length; i++) {
         if (i < risposte.length) {
@@ -125,4 +139,21 @@ function benchmarkQuestion() {
     contatore++
     counter.textContent = "Domanda " + contatore + "/10"
 }
+
+
+function checkAnswer(userSelAnswer) {
+  if (userSelAnswer === currentQuestion.correct_answer) {
+    score++
+  }
+  benchmarkQuestion()
+}
+
+const BUTTONS = document.querySelectorAll("#options button")
+for (let i = 0; i < BUTTONS.length; i++) {
+  BUTTONS[i].addEventListener("click", (click) => {
+    let userSelAnswer = click.target.value
+    checkAnswer(userSelAnswer)
+  })
+}
+
 
