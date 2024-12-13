@@ -106,7 +106,7 @@ let usedQuestions = []
 
 function benchmarkQuestion() {
   if (contatore >= 10) {
-    alert("Quiz terminato! Punteggio: " + score + " su 10");
+    window.open("welcome.html", "_self") //apre una nuova pagina dopo la decima domanda 
     for (let i = 0; i < BUTTONS.length; i++) {
       BUTTONS[i].disabled = true;  
     }
@@ -194,6 +194,7 @@ function startTimer() {
       clearInterval(timerId);
       console.log("Timer completato. Riavvio...");
       startTimer();
+      benchmarkQuestion() // trovato il collegamento, benchmarkQuestion deve essere eseguita qui
     }
   }, 1000);
 }
