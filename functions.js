@@ -165,3 +165,56 @@ function toggleButton(checkboxId, buttonId) {
   button.disabled = !checkbox.checked;
 }
 
+const startTime = 30;
+const radius = 70;
+const circumference = 2 * Math.PI * radius;
+const progressCircle = document.getElementById("progress-circle");
+const timerText = document.getElementById("timerText");
+
+let timerId = null;
+let remainingTime = startTime;
+
+
+progressCircle.style.strokeDasharray = circumference;
+progressCircle.style.strokeDashoffset = 0;
+
+
+function startTimer() {
+  remainingTime = startTime;
+  timerText.textContent = remainingTime;
+  progressCircle.style.strokeDashoffset = 0;
+
+  timerId = setInterval(() => {
+    if (remainingTime > 0) {
+      remainingTime--;
+      timerText.textContent = remainingTime;
+      const offset = circumference - (remainingTime / startTime) * circumference;
+      progressCircle.style.strokeDashoffset = offset;
+    } else {
+      clearInterval(timerId);
+      console.log("Timer completato. Riavvio...");
+      startTimer();
+    }
+  }, 1000);
+}
+
+startTimer()
+function restartTimer() {
+  if (timerId !== null) {
+    clearInterval(timerId);
+  }
+  progressCircle.style.strokeDashoffset = 0;
+  remainingTime = startTime;
+  timerText.textContent = startTime;
+
+  startTimer();
+  console.log("Timer riavviato da input.");
+}
+
+const responseButtons = document.querySelectorAll(".option");
+responseButtons.forEach(button => {
+  button.addEventListener("click", restartTimer);
+});
+
+
+benchmarkQuestion()
