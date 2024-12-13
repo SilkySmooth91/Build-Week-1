@@ -156,7 +156,7 @@ for (let i = 0; i < BUTTONS.length; i++) {
   })
 }
 
-function toggleButton(checkboxId, buttonId) {
+function button(checkboxId, buttonId) {
 
   const checkbox = document.getElementById(checkboxId);
   const button = document.getElementById(buttonId);
